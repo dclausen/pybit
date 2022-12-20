@@ -390,7 +390,8 @@ class _FuturesWebSocketManager(_WebSocketManager):
         else:
             callback_data = message
         callback_function = self._get_callback(topic)
-        callback_function(callback_data)
+        if callback_function:
+            callback_function(callback_data)
 
     def _handle_incoming_message(self, message):
         def is_auth_message():
@@ -448,7 +449,8 @@ class _FuturesWebSocketManager(_WebSocketManager):
 
     def _get_callback(self, topic):
         topic = self._extract_topic(topic)
-        return self.callback_directory[topic]
+        if self.callback_directory.get(topic):
+            return self.callback_directory[topic]
 
     def _pop_callback(self, topic):
         topic = self._extract_topic(topic)
